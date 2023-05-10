@@ -3,7 +3,11 @@ import { sveltekit } from 'lucia-auth/middleware';
 import { planetscale } from '@lucia-auth/adapter-mysql';
 import { dev } from '$app/environment';
 import { discord } from '@lucia-auth/oauth/providers';
-import { Config } from 'sst/node/config';
+import {
+	DISCORD_CLIENT_ID,
+	DISCORD_CLIENT_SECRET,
+	DISCORD_REDIRECT_URI
+} from '$env/static/private';
 
 import { connection } from './db';
 
@@ -20,9 +24,9 @@ export const auth = lucia({
 });
 
 export const discordAuth = discord(auth, {
-	clientId: Config.DISCORD_CLIENT_ID,
-	clientSecret: Config.DISCORD_CLIENT_SECRET,
-	redirectUri: Config.DISCORD_REDIRECT_URI || 'http://localhost:5173/api/oauth/discord',
+	clientId: DISCORD_CLIENT_ID,
+	clientSecret: DISCORD_CLIENT_SECRET,
+	redirectUri: DISCORD_REDIRECT_URI,
 	scope: []
 });
 

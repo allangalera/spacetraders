@@ -1,11 +1,11 @@
 import { drizzle } from 'drizzle-orm/planetscale-serverless';
-import { Config } from 'sst/node/config';
 import { connect } from '@planetscale/database';
+import { DATABASE_HOST, DATABASE_USERNAME, DATABASE_PASSWORD } from '$env/static/private';
 
 export const connection = connect({
-	host: Config.DATABASE_HOST,
-	username: Config.DATABASE_USERNAME,
-	password: Config.DATABASE_PASSWORD
+	host: DATABASE_HOST,
+	username: DATABASE_USERNAME,
+	password: DATABASE_PASSWORD
 });
 
 export const db = drizzle(connection);
