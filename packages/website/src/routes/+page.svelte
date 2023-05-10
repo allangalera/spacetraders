@@ -8,7 +8,7 @@
 
 <div class="h-full flex flex-col items-center justify-centerw-full">
 	<div class="flex flex-col max-w-2xl gap-4 w-full">
-		<h1 class="text-center">Welcome AGSUI</h1>
+		<h1 class="text-center">Welcome AGSTUI</h1>
 		<h2 class="text-center mb-16">
 			a <a href="https://spacetraders.io" target="_blank">Spacetraders</a> ui
 		</h2>
