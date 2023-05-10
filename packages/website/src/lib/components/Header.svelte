@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { AppBar } from '@skeletonlabs/skeleton';
 	import IoMdPerson from 'svelte-icons/io/IoMdPerson.svelte';
-
-	export let username: string;
 </script>
 
 <AppBar>
