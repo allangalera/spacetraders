@@ -4,7 +4,6 @@ import { redirect } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = async ({ cookies, url, locals }) => {
-	console.log('aqui deveria ter um console log');
 	// get code and state params from url
 	const code = url.searchParams.get('code');
 	// const state = url.searchParams.get('state');
@@ -33,7 +32,6 @@ export const GET: RequestHandler = async ({ cookies, url, locals }) => {
 			});
 		};
 		const user = await getUser();
-		console.log({ user });
 		const session = await auth.createSession(user.userId);
 		locals.auth.setSession(session);
 	} catch (e) {

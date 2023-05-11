@@ -15,7 +15,6 @@ export const load: PageServerLoad = async ({ locals }) => {
 	}
 
 	const form = await superValidate(NewAgentSchema);
-	console.log({ form });
 
 	return { form };
 };
@@ -28,8 +27,6 @@ export const actions = {
 		if (!form.valid) {
 			return fail(400, { form });
 		}
-
-		console.log({ user });
 
 		const response = await registerNewAgent(form.data);
 

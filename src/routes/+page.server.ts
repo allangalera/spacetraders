@@ -8,7 +8,6 @@ export const load: PageServerLoad = async ({ locals }) => {
 	const { user } = await locals.auth.validateUser();
 
 	if (!user) {
-		console.log('redirect to login');
 		throw redirect(302, '/login');
 	}
 

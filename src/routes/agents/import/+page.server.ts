@@ -11,7 +11,6 @@ export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.auth.validate();
 
 	if (!session) {
-		console.log('redirect to login');
 		throw redirect(302, '/login');
 	}
 
@@ -28,8 +27,6 @@ export const actions = {
 		if (!form.valid) {
 			return fail(400, { form });
 		}
-
-		console.log({ user });
 
 		const api = generateSpaceTradersApi(form.data.access_token);
 
