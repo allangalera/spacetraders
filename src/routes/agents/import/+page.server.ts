@@ -4,18 +4,18 @@ import { superValidate } from 'sveltekit-superforms/server';
 import { db } from '$lib/server/db';
 import { saves } from '$lib/db/schema';
 import { nanoid } from 'nanoid';
-import { NewAgentSchema } from '$lib/spacetraders/constants';
-import { registerNewAgent } from '$lib/spacetraders';
+import { generateSpaceTradersApi } from '$lib/spacetraders';
+import { ImportAgentSchema } from '$lib/spacetraders/constants';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.auth.validate();
 
 	if (!session) {
+		console.log('redirect to login');
 		throw redirect(302, '/login');
 	}
 
-	const form = await superValidate(NewAgentSchema);
-	console.log({ form });
+	const form = await superValidate(ImportAgentSchema);
 
 	return { form };
 };
@@ -23,7 +23,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 export const actions = {
 	default: async ({ request, locals }) => {
 		const { user } = await locals.auth.validateUser();
-		const form = await superValidate(request, NewAgentSchema);
+		const form = await superValidate(request, ImportAgentSchema);
 
 		if (!form.valid) {
 			return fail(400, { form });
@@ -31,13 +31,15 @@ export const actions = {
 
 		console.log({ user });
 
-		const response = await registerNewAgent(form.data);
+		const api = generateSpaceTradersApi(form.data.access_token);
+
+		const response = await api.agents.getDetails();
 
 		await db.insert(saves).values({
 			id: nanoid(),
 			userId: user.userId,
-			symbol: form.data.symbol,
-			access_token: response.data.token
+			symbol: response.data.symbol,
+			access_token: form.data.access_token
 		});
 
 		throw redirect(302, '/');

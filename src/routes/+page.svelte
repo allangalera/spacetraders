@@ -3,7 +3,21 @@
 	import IoMdCopy from 'svelte-icons/io/IoMdCopy.svelte';
 	import { clipboard } from '@skeletonlabs/skeleton';
 	import TokenMask from '$lib/components/TokenMask.svelte';
+	import { setSelectedAgent, agent } from '$lib/stores/agent';
+	import type { SelectedAgent } from '$lib/stores/agent';
 	export let data;
+
+	const selectAgent = (selectedAgent: SelectedAgent) => {
+		setSelectedAgent(selectedAgent);
+	};
+
+	agent.subscribe(async (value) => {
+		if (!value) return;
+
+		const resp = await value.api.agents.getDetails();
+
+		console.log(resp);
+	});
 </script>
 
 <div class="h-full flex flex-col items-center justify-centerw-full">
@@ -37,17 +51,22 @@
 									<TokenMask token={save.access_token} />
 								</td>
 								<td class="text-end">
-									<button
-										class="btn variant-ghost"
-										use:clipboard={save.access_token}
-										on:click={() => {
-											toastStore.trigger({
-												message: 'Access token copied successsfully.'
-											});
-										}}
-									>
-										<div class="w-6 h-6"><IoMdCopy class="w-10 h-10" /></div>
-									</button>
+									<div class="flex items-center gap-4 justify-end">
+										<button
+											class="btn variant-ghost"
+											use:clipboard={save.access_token}
+											on:click={() => {
+												toastStore.trigger({
+													message: 'Access token copied successsfully.'
+												});
+											}}
+										>
+											<div class="w-6 h-6"><IoMdCopy class="w-10 h-10" /></div>
+										</button>
+										<button class="btn variant-ghost" on:click={() => selectAgent(save)}>
+											select
+										</button>
+									</div>
 								</td>
 							</tr>
 						{/each}
@@ -55,7 +74,10 @@
 				</tbody>
 			</table>
 		</div>
-		<a class="btn variant-ghost-primary" href="/agents/new">create a new game</a>
+		<div class="flex gap-4 justify-end">
+			<a class="btn variant-ghost-primary" href="/agents/import">import using access token</a>
+			<a class="btn variant-ghost-primary" href="/agents/new">create a new game</a>
+		</div>
 	</div>
 </div>
 <Toast />

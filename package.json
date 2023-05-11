@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "SVELTE_INSPECTOR_OPTIONS=true sst bind vite dev",
+    "dev": "sst bind vite dev",
     "vite:dev": "vite dev",
     "build": "vite build",
     "preview": "vite preview",
@@ -31,6 +31,8 @@
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
     "autoprefixer": "^10.4.14",
+    "aws-cdk-lib": "2.72.1",
+    "constructs": "10.1.156",
     "drizzle-kit": "^0.17.6",
     "eslint": "^8.28.0",
     "eslint-config-prettier": "^8.5.0",
@@ -39,6 +41,7 @@
     "postcss-load-config": "^4.0.1",
     "prettier": "^2.8.0",
     "prettier-plugin-svelte": "^2.8.1",
+    "sst": "^2.8.17",
     "svelte": "^3.54.0",
     "svelte-check": "^3.0.1",
     "svelte-kit-sst": "^2.8.17",
@@ -49,10 +52,7 @@
     "typescript": "^5.0.0",
     "vite": "^4.3.0",
     "vitest": "^0.25.3",
-    "zod": "^3.21.4",
-    "sst": "^2.8.17",
-    "aws-cdk-lib": "2.72.1",
-    "constructs": "10.1.156"
+    "zod": "^3.21.4"
   },
   "type": "module",
   "dependencies": {
@@ -60,6 +60,7 @@
     "@lucia-auth/oauth": "^1.0.1",
     "@planetscale/database": "^1.7.0",
     "drizzle-orm": "^0.25.4",
+    "ky": "^0.33.3",
     "lucia-auth": "^1.5.0",
     "mysql2": "^3.3.0",
     "nanoid": "^4.0.2",
