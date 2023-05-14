@@ -1,4 +1,4 @@
-import { DEFAULT_FACTION, FactionSchema } from '$lib/constants/factions';
+import { DEFAULT_FACTION, FactionSchema } from '$lib/spacetraders/constants/factions';
 import { z } from 'zod';
 
 export const NewAgentSchema = z.object({

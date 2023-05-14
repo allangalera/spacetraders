@@ -1,20 +1,33 @@
-<script>
+<script lang="ts">
 	import '../theme.postcss';
-	import '@skeletonlabs/skeleton/styles/all.css';
+	import '@skeletonlabs/skeleton/styles/skeleton.css';
 	import '../app.postcss';
 	import { AppShell, autoModeWatcher } from '@skeletonlabs/skeleton';
 	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';
+	import { computePosition, autoUpdate, offset, shift, flip, arrow } from '@floating-ui/dom';
+	import { storePopup } from '@skeletonlabs/skeleton';
+	import type { PageData } from './$types';
+	import { agentStore } from '$lib/stores/agent';
 	// import SideBar from '$lib/components/SideBar.svelte';
+	storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
+
+	export let data: PageData;
+
+	$: {
+		if (!data.user) {
+			agentStore.set(null);
+		}
+	}
 </script>
 
-<svelte:head
-	>{@html `<script>${autoModeWatcher.toString()} autoModeWatcher();</script>`}</svelte:head
->
+<svelte:head>
+	{@html `<script>${autoModeWatcher.toString()} autoModeWatcher();</script>`}
+</svelte:head>
 
 <AppShell>
 	<svelte:fragment slot="header">
-		<Header />
+		<Header user={data.user} />
 	</svelte:fragment>
 	<!-- <svelte:fragment slot="sidebarLeft"><SideBar /></svelte:fragment> -->
 	<!-- <svelte:fragment slot="sidebarRight">Sidebar Right</svelte:fragment> -->

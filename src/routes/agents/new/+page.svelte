@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { FACTIONS_LIST } from '$lib/constants/factions';
+	import { FACTIONS_LIST } from '$lib/spacetraders/constants/factions';
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
 	import { ProgressRadial } from '@skeletonlabs/skeleton';
