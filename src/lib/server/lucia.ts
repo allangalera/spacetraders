@@ -3,11 +3,7 @@ import { sveltekit } from 'lucia-auth/middleware';
 import { planetscale } from '@lucia-auth/adapter-mysql';
 import { dev } from '$app/environment';
 import { discord } from '@lucia-auth/oauth/providers';
-import {
-	DISCORD_CLIENT_ID,
-	DISCORD_CLIENT_SECRET,
-	DISCORD_REDIRECT_URI
-} from '$env/static/private';
+import { env } from '$env/dynamic/private';
 
 import { connection } from './db';
 
@@ -18,16 +14,16 @@ export const auth = lucia({
 	transformDatabaseUser: (userData) => {
 		return {
 			userId: userData.id,
-			username: userData.username
+			username: userData.username,
 		};
-	}
+	},
 });
 
 export const discordAuth = discord(auth, {
-	clientId: DISCORD_CLIENT_ID,
-	clientSecret: DISCORD_CLIENT_SECRET,
-	redirectUri: DISCORD_REDIRECT_URI,
-	scope: []
+	clientId: env.DISCORD_CLIENT_ID,
+	clientSecret: env.DISCORD_CLIENT_SECRET,
+	redirectUri: env.DISCORD_REDIRECT_URI,
+	scope: [],
 });
 
 export type Auth = typeof auth;
