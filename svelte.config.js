@@ -6,10 +6,15 @@ const config = {
   preprocess: vitePreprocess(),
   kit: {
     adapter: adapter(),
+    alias: {
+      $utils: 'src/utils',
+      $services: 'src/services'
+    }
   },
   vitePlugin: {
     inspector: true,
-  }
+  },
+
 };
 
 export default config;

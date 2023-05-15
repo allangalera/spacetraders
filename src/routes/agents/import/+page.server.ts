@@ -6,6 +6,7 @@ import { saves } from '$lib/db/schema';
 import { nanoid } from 'nanoid';
 import { generateSpaceTradersApi } from '$lib/spacetraders';
 import { ImportAgentSchema } from '$lib/spacetraders/constants';
+import { isHttpError } from '$utils';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.auth.validate();
@@ -29,16 +30,24 @@ export const actions = {
 		}
 
 		const api = generateSpaceTradersApi(form.data.access_token);
+		try {
+			const response = await api.agent.getDetails();
 
-		const response = await api.agents.getDetails();
+			await db.insert(saves).values({
+				id: nanoid(),
+				userId: user.userId,
+				symbol: response.data.symbol,
+				access_token: form.data.access_token,
+			});
 
-		await db.insert(saves).values({
-			id: nanoid(),
-			userId: user.userId,
-			symbol: response.data.symbol,
-			access_token: form.data.access_token
-		});
-
-		throw redirect(302, '/');
-	}
+			throw redirect(302, '/');
+		} catch (error) {
+			if (isHttpError(error)) {
+				if (error.response.status === 401) {
+					return fail(400, { form });
+				}
+			}
+			return fail(400, { form });
+		}
+	},
 } satisfies Actions;

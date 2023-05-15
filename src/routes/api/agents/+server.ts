@@ -1,20 +1,18 @@
 import { saves } from '$lib/db/schema';
 import { db } from '$lib/server/db';
+import { json } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
-import type { PageServerLoad } from './$types';
-import { redirect } from '@sveltejs/kit';
 
-export const load: PageServerLoad = async ({ locals }) => {
+export const GET = async ({ locals }) => {
 	const { user } = await locals.auth.validateUser();
 
 	if (!user) {
-		throw redirect(302, '/login');
+		return new Response(null, { status: 401 });
 	}
 
 	const savedGames = await db.select().from(saves).where(eq(saves.userId, user.userId));
 
-	return {
-		username: user.username,
-		savedGames: savedGames,
-	};
+	return json({
+		data: savedGames,
+	});
 };

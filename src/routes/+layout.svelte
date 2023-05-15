@@ -5,6 +5,7 @@
 	import { AppShell, autoModeWatcher } from '@skeletonlabs/skeleton';
 	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';
+	import { Modal, Toast } from '@skeletonlabs/skeleton';
 	import { computePosition, autoUpdate, offset, shift, flip, arrow } from '@floating-ui/dom';
 	import { storePopup } from '@skeletonlabs/skeleton';
 	import type { PageData } from './$types';
@@ -24,6 +25,9 @@
 <svelte:head>
 	{@html `<script>${autoModeWatcher.toString()} autoModeWatcher();</script>`}
 </svelte:head>
+
+<Modal />
+<Toast />
 
 <AppShell>
 	<svelte:fragment slot="header">
