@@ -68,7 +68,7 @@
 						<tr>
 							<th class="text-center">Symbol</th>
 							<th class="text-center">Access Token</th>
-							<th />
+							<th class="text-center">Actions</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -88,7 +88,7 @@
 									<td class="text-end">
 										<div class="flex items-center gap-4 justify-end">
 											<button
-												class="btn variant-ghost"
+												class="btn variant-ringed"
 												use:clipboard={save.access_token}
 												on:click={() => {
 													toastStore.trigger({
@@ -98,11 +98,11 @@
 											>
 												<div class="w-6 h-6"><IoMdCopy class="w-10 h-10" /></div>
 											</button>
-											<button class="btn variant-ghost" on:click={() => selectAgent(save)}>
+											<button class="btn variant-ringed" on:click={() => selectAgent(save)}>
 												select
 											</button>
 											<button
-												class="btn variant-ghost-error"
+												class="btn variant-filled-error"
 												on:click={() => {
 													modalStore.trigger({
 														type: 'confirm',
@@ -160,8 +160,8 @@
 				</table>
 			</div>
 			<div class="flex gap-4 justify-end">
-				<a class="btn variant-ghost-primary" href="/agents/import">import using access token</a>
-				<a class="btn variant-ghost-primary" href="/agents/new">create a new game</a>
+				<a class="btn variant-ringed-primary" href="/agents/import">import using access token</a>
+				<a class="btn variant-ringed-primary" href="/agents/new">create a new game</a>
 			</div>
 		{/if}
 	</div>
