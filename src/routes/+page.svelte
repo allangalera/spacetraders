@@ -13,8 +13,8 @@
 
 	export let data;
 
-	let agentDetails: Agent;
-	let ships: Ship[];
+	let agentDetails: Agent | null;
+	let ships: Ship[] | null;
 	let savedGames: (InferModel<typeof saves, 'select'> & { isLoading?: boolean })[];
 
 	const selectAgent = (selectedAgent: SelectedAgent) => {
@@ -22,7 +22,11 @@
 	};
 
 	apiStore.subscribe(async (api) => {
-		if (!api) return;
+		if (!api) {
+			agentDetails = null;
+			ships = null;
+			return;
+		}
 
 		const [getDetails, listShips] = await Promise.allSettled([
 			api.agent.getDetails(),
