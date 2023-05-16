@@ -30,17 +30,9 @@ export const actions = {
 		}
 
 		const api = generateSpaceTradersApi(form.data.access_token);
+		let response;
 		try {
-			const response = await api.agent.getDetails();
-
-			await db.insert(saves).values({
-				id: nanoid(),
-				userId: user.userId,
-				symbol: response.data.symbol,
-				access_token: form.data.access_token,
-			});
-
-			throw redirect(302, '/');
+			response = await api.agent.getDetails();
 		} catch (error) {
 			if (isHttpError(error)) {
 				if (error.response.status === 401) {
@@ -49,5 +41,19 @@ export const actions = {
 			}
 			return fail(400, { form });
 		}
+
+		try {
+			await db.insert(saves).values({
+				id: nanoid(),
+				userId: user.userId,
+				symbol: response.data.symbol,
+				access_token: form.data.access_token,
+			});
+		} catch (error) {
+			console.error(error);
+			return fail(400, { form });
+		}
+
+		throw redirect(302, '/');
 	},
 } satisfies Actions;
