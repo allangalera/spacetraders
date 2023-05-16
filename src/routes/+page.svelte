@@ -109,7 +109,7 @@
 														title: 'Are you sure?',
 														body: 'Are you sure you want to delete this agent?',
 														response: async (r) => {
-															console.log({ r });
+															if (!r) return;
 															if (!apiStore) return;
 
 															savedGames = savedGames.map((i) => {
