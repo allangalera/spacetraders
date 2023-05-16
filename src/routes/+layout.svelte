@@ -2,7 +2,7 @@
 	import '../theme.postcss';
 	import '@skeletonlabs/skeleton/styles/skeleton.css';
 	import '../app.postcss';
-	import { AppShell, autoModeWatcher } from '@skeletonlabs/skeleton';
+	import { AppShell, setInitialClassState } from '@skeletonlabs/skeleton';
 	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 	import { Modal, Toast } from '@skeletonlabs/skeleton';
@@ -22,9 +22,7 @@
 	}
 </script>
 
-<svelte:head>
-	{@html `<script>${autoModeWatcher.toString()} autoModeWatcher();</script>`}
-</svelte:head>
+<svelte:head>{@html `<script>(${setInitialClassState.toString()})();</script>`}</svelte:head>
 
 <Modal />
 <Toast />
