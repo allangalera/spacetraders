@@ -15,6 +15,10 @@ export const setSelectedAgent = (selectedAgent: SelectedAgent) => {
 	agentStore.set(selectedAgent);
 };
 
+export const resetAgent = () => {
+	agentStore.set(null);
+};
+
 export const apiStore = derived(agentStore, ($agent) =>
 	$agent?.access_token ? generateSpaceTradersApi($agent?.access_token) : null,
 );
