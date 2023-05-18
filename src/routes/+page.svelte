@@ -3,12 +3,14 @@
 	import IoMdCopy from 'svelte-icons/io/IoMdCopy.svelte';
 	import TokenMask from '$lib/components/TokenMask.svelte';
 	import type { Agent } from '$lib/spacetraders/types/agents';
-	import { setSelectedAgent, apiStore, agentStore } from '$lib/stores/agent';
+	import { setSelectedAgent, apiStore } from '$lib/stores/agent';
 	import type { SelectedAgent } from '$lib/stores/agent';
 	import type { Ship } from '$lib/spacetraders/types/ships.js';
-	import AgentDetails from '$lib/components/AgentDetails.svelte';
 	import type { InferModel } from 'drizzle-orm';
 	import type { saves } from '$lib/db/schema';
+	import IoMdArrowDropdown from 'svelte-icons/io/IoMdArrowDropdown.svelte';
+	import { popup } from '@skeletonlabs/skeleton';
+	import type { PopupSettings } from '@skeletonlabs/skeleton';
 	import ky from 'ky';
 
 	export let data;
@@ -28,18 +30,9 @@
 			return;
 		}
 
-		const [getDetails, listShips] = await Promise.allSettled([
-			api.agent.getDetails(),
-			api.fleet.listShips(),
-		]);
+		const listShips = await api.fleet.listShips();
 
-		if (getDetails.status === 'fulfilled') {
-			agentDetails = getDetails.value.data;
-		}
-
-		if (listShips.status === 'fulfilled') {
-			ships = listShips.value.data;
-		}
+		ships = listShips.data;
 	});
 
 	$: savedGames = data.savedGames;
@@ -48,16 +41,67 @@
 <div class="h-full flex flex-col items-center justify-centerw-full">
 	<div class="flex flex-col max-w-2xl gap-4 w-full">
 		{#if $apiStore}
-			{#if agentDetails}
-				<AgentDetails {agentDetails} />
-			{:else}
-				<p>loading . . .</p>
-			{/if}
 			{#if ships}
 				<h3>Ships</h3>
-				{#each ships as ship}
-					<p>Ship Symbol: {ship.symbol}</p>
-				{/each}
+				<!-- <div class="table-container"> -->
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th class="text-center">Ship</th>
+							<th class="text-center">Waypoint</th>
+							<th class="text-center">Crew</th>
+							<th class="text-center">Fuel</th>
+							<th class="text-center">Cargo</th>
+							<th class="text-center">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{#each ships as ship}
+							<tr>
+								<td class="text-center">{ship.symbol}</td>
+								<td class="text-center">{ship.nav.waypointSymbol}</td>
+								<td class="text-center">{ship.crew.current}/{ship.crew.capacity}</td>
+								<td class="text-center">{ship.fuel.current}/{ship.fuel.capacity}</td>
+								<td class="text-center">{ship.cargo.units}/{ship.cargo.capacity}</td>
+								<td>
+									<div class="flex items-center justify-center">
+										<button class="btn btn-sm variant-ringed">
+											<div
+												class="w-6 h-6"
+												use:popup={{
+													target: `ship-action-${ship.symbol}`,
+													event: 'click',
+													placement: 'bottom',
+												}}
+											>
+												<IoMdArrowDropdown />
+											</div>
+											<div
+												class="card bg-surface-50-900-token"
+												data-popup={`ship-action-${ship.symbol}`}
+											>
+												<div class="flex flex-col gap-1">
+													<button
+														class="btn hover:variant-ghost-surface"
+														on:click={() => console.log('get-waypoint')}
+													>
+														Get waypoint
+													</button>
+													<button
+														class="btn hover:variant-ghost-surface"
+														on:click={() => console.log('list-waypoints')}>List waypoints</button
+													>
+												</div>
+												<div class="arrow bg-surface-50-900-token" />
+											</div>
+										</button>
+									</div>
+								</td>
+							</tr>
+						{/each}
+					</tbody>
+				</table>
+				<!-- </div> -->
 			{:else}
 				<p>loading . . .</p>
 			{/if}
