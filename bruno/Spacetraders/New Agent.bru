@@ -1,0 +1,22 @@
+meta {
+  name: New Agent
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "symbol": "AGT_TEST_3",
+    "faction": "UNITED"
+  }
+}
+
+script:pre-request {
+  delete req.headers.authorization
+}

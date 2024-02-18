@@ -1,0 +1,15 @@
+meta {
+  name: Get Faction
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/factions/COSMIC
+  body: none
+  auth: none
+}
+
+script:pre-request {
+  delete req.headers.authorization
+}

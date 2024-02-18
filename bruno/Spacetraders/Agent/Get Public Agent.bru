@@ -1,0 +1,11 @@
+meta {
+  name: Get Public Agent
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/agents/{{agentSymbol}}
+  body: none
+  auth: none
+}
