@@ -1,0 +1,11 @@
+meta {
+  name: Get Market
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/systems/{{systemSymbol}}/waypoints/{{waypointSymbol}}/market
+  body: none
+  auth: none
+}

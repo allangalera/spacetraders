@@ -1,0 +1,18 @@
+meta {
+  name: Sell Cargo
+  type: http
+  seq: 20
+}
+
+post {
+  url: {{baseUrl}}/my/ships/{{shipSymbol}}/sell
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "symbol": "ICE_WATER",
+    "units": 1
+  }
+}

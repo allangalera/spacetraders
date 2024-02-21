@@ -1,0 +1,17 @@
+meta {
+  name: Navigate Ship
+  type: http
+  seq: 16
+}
+
+post {
+  url: {{baseUrl}}/my/ships/{{shipSymbol}}/navigate
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "waypointSymbol": "X1-BU78-DC5Z"
+  }
+}

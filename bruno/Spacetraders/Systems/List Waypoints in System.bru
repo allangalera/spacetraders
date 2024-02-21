@@ -1,0 +1,18 @@
+meta {
+  name: List Waypoints in System
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/systems/{{systemSymbol}}/waypoints?traits=MARKETPLACE
+  body: none
+  auth: none
+}
+
+query {
+  traits: MARKETPLACE
+  ~limit: 20
+  ~page: 3
+  ~type: PLANET
+}
