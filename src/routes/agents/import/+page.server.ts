@@ -1,6 +1,7 @@
 import type { PageServerLoad, Actions } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
-import { superValidate } from 'sveltekit-superforms/server';
+import { superValidate } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
 import { db } from '$lib/server/db';
 import { saves } from '$lib/db/schema';
 import { nanoid } from 'nanoid';
@@ -15,7 +16,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 		throw redirect(302, '/login');
 	}
 
-	const form = await superValidate(ImportAgentSchema);
+	const form = await superValidate(zod(ImportAgentSchema));
 
 	return { form };
 };
@@ -23,7 +24,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 export const actions = {
 	default: async ({ request, locals }) => {
 		const { user } = await locals.auth.validateUser();
-		const form = await superValidate(request, ImportAgentSchema);
+		const form = await superValidate(request, zod(ImportAgentSchema));
 
 		if (!form.valid) {
 			return fail(400, { form });

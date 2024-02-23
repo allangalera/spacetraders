@@ -14,16 +14,10 @@
 	}
 </script>
 
-<div class="w-full h-full flex flex-col">
+<div class="w-full h-full flex flex-col bg-slate-950 text-slate-100">
 	<Header user={data.user} />
-	<main class="flex-1"><slot /></main>
+	<main class="flex-1 p-4"><slot /></main>
 	<footer>
 		<Footer />
 	</footer>
 </div>
-
-<style lang="postcss">
-	:global(html) {
-		background-color: theme(colors.gray.300);
-	}
-</style>

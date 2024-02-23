@@ -1,11 +1,13 @@
 import type { PageServerLoad, Actions } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
-import { superValidate } from 'sveltekit-superforms/server';
+import { superValidate } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
 import { db } from '$lib/server/db';
 import { saves } from '$lib/db/schema';
 import { nanoid } from 'nanoid';
 import { NewAgentSchema } from '$lib/spacetraders/constants';
 import { registerNewAgent } from '$lib/spacetraders';
+
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.auth.validate();
@@ -14,7 +16,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 		throw redirect(302, '/login');
 	}
 
-	const form = await superValidate(NewAgentSchema);
+	const form = await superValidate(zod(NewAgentSchema));
 
 	return { form };
 };
@@ -22,7 +24,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 export const actions = {
 	default: async ({ request, locals }) => {
 		const { user } = await locals.auth.validateUser();
-		const form = await superValidate(request, NewAgentSchema);
+		const form = await superValidate(request, zod(NewAgentSchema));
 
 		if (!form.valid) {
 			return fail(400, { form });
