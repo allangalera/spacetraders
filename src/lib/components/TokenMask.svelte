@@ -8,4 +8,4 @@
 	$: maskedToken = getMaskedToken(token);
 </script>
 
-<span>{maskedToken}</span>
+{maskedToken}

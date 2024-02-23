@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
-	import { ProgressRadial } from '@skeletonlabs/skeleton';
 
 	export let data: PageData;
 
@@ -14,7 +13,7 @@
 		<form class="flex flex-col gap-4 mt-4 relative" method="post" use:enhance>
 			{#if $delayed}
 				<div class="absolute h-full w-full flex justify-center items-center bg-surface-900/50">
-					<ProgressRadial />
+					Loading . . .
 				</div>
 			{/if}
 			<label class="label">

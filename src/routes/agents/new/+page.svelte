@@ -1,8 +1,6 @@
 <script lang="ts">
-	import { FACTIONS_LIST } from '$lib/spacetraders/constants/factions';
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
-	import { ProgressRadial } from '@skeletonlabs/skeleton';
 	export let data: PageData;
 	const { form, enhance, errors, delayed } = superForm(data.form);
 </script>
@@ -13,7 +11,7 @@
 		<form class="flex flex-col gap-4 mt-4 relative" method="post" use:enhance>
 			{#if $delayed}
 				<div class="absolute h-full w-full flex justify-center items-center bg-surface-900/50">
-					<ProgressRadial />
+					Loading . . .
 				</div>
 			{/if}
 			<label class="label">
@@ -35,7 +33,7 @@
 			<div class="flex flex-col gap-2">
 				<p>Faction:</p>
 				<div class="space-y-2">
-					{#each FACTIONS_LIST as faction}
+					{#each ['COSMIC'] as faction}
 						<label class="flex items-center space-x-2">
 							<input
 								class="radio"

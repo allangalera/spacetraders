@@ -1,6 +1,6 @@
 import ky from 'ky';
 
-import type { ApiResponse, NewAgent } from '$lib/spacetraders/types';
+import type { SpacetradersStatus, ApiResponse, NewAgent } from '$lib/spacetraders/types';
 import type { Contract } from '$lib/spacetraders/types/contracts';
 import type { Agent } from '$lib/spacetraders/types/agents';
 import type { Faction } from '$lib/spacetraders/types/factions';
@@ -12,24 +12,34 @@ const SPACETRADERS_API_URL = 'https://api.spacetraders.io/v2';
 export const generateSpaceTradersApi = (accessToken: string) => {
 	const client = ky.extend({
 		prefixUrl: SPACETRADERS_API_URL,
+	});
+	const authenticatedClient = ky.extend({
+		prefixUrl: SPACETRADERS_API_URL,
 		headers: {
 			Authorization: `Bearer ${accessToken}`,
 		},
 	});
 
+	const spacetraders = {
+		getStatus: async () => {
+			return await client.get('').json<SpacetradersStatus>();
+		},
+	};
+
 	const agent = {
 		getDetails: async () => {
-			return await client.get('my/agent').json<ApiResponse<Agent>>();
+			return await authenticatedClient.get('my/agent').json<ApiResponse<Agent>>();
 		},
 	};
 
 	const fleet = {
 		listShips: async () => {
-			return await client.get('my/ships').json<ApiResponse<Ship[]>>();
+			return await authenticatedClient.get('my/ships').json<ApiResponse<Ship[]>>();
 		},
 	};
 
 	return {
+		spacetraders,
 		agent,
 		fleet,
 	};

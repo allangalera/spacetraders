@@ -4,8 +4,8 @@
 	export let agentDetails: Agent;
 </script>
 
-<div class="card variant-ghost-primary">
-	<header class="card-header p-4 text-center">
+<div class="">
+	<header class="">
 		<h4>Agent Details</h4>
 	</header>
 	<section class="p-4">

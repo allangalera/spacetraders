@@ -1,4 +1,3 @@
-import { DEFAULT_FACTION, FactionSchema } from '$lib/spacetraders/constants/factions';
 import { z } from 'zod';
 
 export const NewAgentSchema = z.object({
@@ -7,9 +6,9 @@ export const NewAgentSchema = z.object({
 		.min(3)
 		.max(14)
 		.regex(/^([a-z0-9-_]){3,14}$/gi),
-	faction: FactionSchema.default(DEFAULT_FACTION)
+	faction: z.string(),
 });
 
 export const ImportAgentSchema = z.object({
-	access_token: z.string().min(2)
+	access_token: z.string().min(2),
 });

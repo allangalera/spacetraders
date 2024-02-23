@@ -1,19 +1,15 @@
 <script lang="ts">
-	import { AppBar } from '@skeletonlabs/skeleton';
-	import IoMdPerson from 'svelte-icons/io/IoMdPerson.svelte';
+	import { createDropdownMenu, melt } from '@melt-ui/svelte';
+	import UserOutlineIcon from 'virtual:icons/mdi/user-outline';
 	import { resetAgent, agentStore } from '$lib/stores/agent';
 	import type { User } from '$lib/stores/user';
-	import { popup } from '@skeletonlabs/skeleton';
-	import type { PopupSettings } from '@skeletonlabs/skeleton';
 	import { goto } from '$app/navigation';
 
 	export let user: User;
 
-	const userMenu: PopupSettings = {
-		event: 'click',
-		target: 'userMenu',
-		placement: 'bottom',
-	};
+	const {
+		elements: { menu, item, trigger, arrow },
+	} = createDropdownMenu();
 
 	const switchAgent = () => {
 		resetAgent();
@@ -23,28 +19,24 @@
 	};
 </script>
 
-<AppBar>
-	<svelte:fragment slot="lead"><a href="/">AGSTUI</a></svelte:fragment>
-	<svelte:fragment slot="trail">
-		{#if $agentStore}
-			<p>
-				Symbol: {$agentStore.symbol}
-			</p>
-		{/if}
-		{#if user}
-			<button class="p-2 btn variant-ringed" use:popup={userMenu}>
-				<div class="w-6 h-6"><IoMdPerson /></div></button
-			>
-		{/if}
-	</svelte:fragment>
-</AppBar>
+<header class="p-5 flex justify-between">
+	<a href="/">AGSTUI</a>
+	{#if $agentStore}
+		<p>
+			Symbol: {$agentStore.symbol}
+		</p>
+	{/if}
+	{#if user}
+		<button class="p-2" use:melt={$trigger}>
+			<div class="w-6 h-6"><UserOutlineIcon /></div>
+		</button>
+	{/if}
+</header>
 
-<div class="card bg-surface-50-900-token" data-popup="userMenu">
-	<div class="flex flex-col gap-1">
-		{#if $agentStore}
-			<button class="btn hover:variant-ghost-surface" on:click={switchAgent}> Switch Agent </button>
-		{/if}
-		<a class="btn hover:variant-ghost-surface" href="/api/oauth/signout">Log Out</a>
-	</div>
-	<div class="arrow bg-surface-50-900-token" />
+<div class="bg-slate-300 flex flex-col gap-4 p-4" use:melt={$menu}>
+	{#if $agentStore}
+		<button use:melt={$item} class="" on:click={switchAgent}> Switch Agent </button>
+	{/if}
+	<a use:melt={$item} class="" href="/api/oauth/signout">Log Out</a>
+	<div use:melt={$arrow} />
 </div>
