@@ -40,3 +40,9 @@
 	<a use:melt={$item} class="" href="/api/oauth/signout">Log Out</a>
 	<div use:melt={$arrow} />
 </div>
+
+<style>
+	header {
+		z-index: 2;
+	}
+</style>

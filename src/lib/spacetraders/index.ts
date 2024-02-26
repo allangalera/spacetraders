@@ -6,6 +6,7 @@ import type { Agent } from '$lib/spacetraders/types/agents';
 import type { Faction } from '$lib/spacetraders/types/factions';
 import type { Ship } from '$lib/spacetraders/types/ships';
 import { NewAgentSchema } from '$lib/spacetraders/constants';
+import type { System } from './types/system';
 
 const SPACETRADERS_API_URL = 'https://api.spacetraders.io/v2';
 
@@ -38,10 +39,17 @@ export const generateSpaceTradersApi = (accessToken: string) => {
 		},
 	};
 
+	const system = {
+		get: async (system: string) => {
+			return await authenticatedClient.get(`systems/${system}`).json<ApiResponse<System>>();
+		},
+	};
+
 	return {
 		spacetraders,
 		agent,
 		fleet,
+		system,
 	};
 };
 

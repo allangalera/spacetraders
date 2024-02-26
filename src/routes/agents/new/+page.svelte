@@ -1,10 +1,12 @@
 <script lang="ts">
+	import Universe from '$lib/components/Universe.svelte';
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms';
 	export let data: PageData;
 	const { form, enhance, errors, delayed } = superForm(data.form);
 </script>
 
+<Universe />
 <div class="flex flex-col justify-center items-center">
 	<div class="max-w-2xl w-full">
 		<h1>Create a new game</h1>

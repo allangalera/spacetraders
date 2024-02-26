@@ -14,7 +14,7 @@
 	}
 </script>
 
-<div class="w-full h-full flex flex-col bg-slate-950 text-slate-100">
+<div class="w-full h-full flex flex-col text-slate-100">
 	<Header user={data.user} />
 	<main class="flex-1 p-4"><slot /></main>
 	<footer>
