@@ -6,7 +6,7 @@ import { db } from '$lib/server/db';
 import { saves } from '$lib/db/schema';
 import { nanoid } from 'nanoid';
 import { NewAgentSchema } from '$lib/spacetraders/constants';
-import { registerNewAgent } from '$lib/spacetraders';
+import { getFactions, registerNewAgent } from '$lib/spacetraders';
 
 
 export const load: PageServerLoad = async ({ locals }) => {
@@ -16,9 +16,11 @@ export const load: PageServerLoad = async ({ locals }) => {
 		throw redirect(302, '/login');
 	}
 
+	const response = await getFactions({limit: 20});
+
 	const form = await superValidate(zod(NewAgentSchema));
 
-	return { form };
+	return { form, factions: response.data };
 };
 
 export const actions = {

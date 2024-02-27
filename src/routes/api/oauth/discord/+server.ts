@@ -22,8 +22,6 @@ export const GET: RequestHandler = async ({ cookies, url, locals }) => {
 	try {
 		const { existingUser, providerUser, createUser } = await discordAuth.validateCallback(code);
 
-		console.log({ providerUser, existingUser });
-
 		const getUser = async () => {
 			if (existingUser) return existingUser;
 			// create a new user if the user does not exist

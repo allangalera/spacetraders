@@ -11,10 +11,14 @@
 	let isMouseDown = false;
 	let mouseDownPosition: { x: number; y: number; translateX: number; translateY: number };
 	const RING_INTERVAL = 100;
-	const rings = Array.from({ length: 20 }).map((v, i) => (i + 1) * RING_INTERVAL);
+	const rings = Array.from({ length: 8 }).map((v, i) => (i + 1) * RING_INTERVAL);
 	const ZOOM = {
 		MIN: 1,
 		MAX: 18,
+	};
+	const TRANSLATE = {
+		X_MAX: 200,
+		Y_MAX: 200,
 	};
 	const COLORS = {
 		PLANET: 'green',
@@ -56,14 +60,23 @@
 		scale = ZOOM.MIN;
 	}
 
+	function limitNumberWithinRange({ num, min, max }: { num: number; min: number; max: number }) {
+		return Math.min(Math.max(num, min), max);
+	}
+
+	function setTranslateX(amount: number) {
+		translateX = limitNumberWithinRange({ num: amount, min: -200, max: 200 });
+	}
+	function setTranslateY(amount: number) {
+		translateY = limitNumberWithinRange({ num: amount, min: -200, max: 200 });
+	}
+
 	async function getAgentDetails(api: ReturnType<typeof generateSpaceTradersApi>) {
-		console.log('getAgentDetails');
 		const response = await api.agent.getDetails();
 		userAgent = response.data;
 	}
 
 	async function getSystem(api: ReturnType<typeof generateSpaceTradersApi>, agent: Agent) {
-		console.log('getSystem');
 		let symbol = agent.headquarters.split('-').slice(0, 2).join('-');
 		const response = await api.system.get(symbol);
 		system = response.data;
@@ -79,9 +92,6 @@
 			getSystem(spaceTraderApi, userAgent);
 		}
 	}
-	$: {
-		console.log(system);
-	}
 
 	onMount(() => {
 		function wheelEventFn(e: WheelEvent) {
@@ -95,16 +105,15 @@
 
 		function keyupEventFn(e: KeyboardEvent) {
 			if (e.code === 'ArrowRight') {
-				translateX = translateX - 10;
+				setTranslateX(translateX - 10);
 			}
 			if (e.code === 'ArrowLeft') {
-				translateX = translateX + 10;
+				setTranslateX(translateX + 10);
 			}
 		}
 		window.addEventListener('keyup', keyupEventFn);
 
 		function mousedownEventFn(e: MouseEvent) {
-			// console.log('mousedown', e);
 			isMouseDown = true;
 			mouseDownPosition = {
 				x: e.clientX,
@@ -122,9 +131,8 @@
 
 		function mousemoveEventFn(e: MouseEvent) {
 			if (isMouseDown) {
-				console.log('mousemove', mouseDownPosition.x - e.clientX);
-				translateX = mouseDownPosition.translateX - (mouseDownPosition.x - e.clientX);
-				translateY = mouseDownPosition.translateY - (mouseDownPosition.y - e.clientY);
+				setTranslateX(mouseDownPosition.translateX - (mouseDownPosition.x - e.clientX));
+				setTranslateY(mouseDownPosition.translateY - (mouseDownPosition.y - e.clientY));
 			}
 		}
 		window.addEventListener('mousemove', mousemoveEventFn);

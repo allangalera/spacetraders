@@ -27,7 +27,6 @@
 		try {
 			const response = await ky.delete(`/api/agents/${saveId}`);
 
-			console.log({ response });
 			savedGames = savedGames.filter((i) => i.id !== saveId);
 		} catch (error) {
 			savedGames = savedGames.map((i) => {

@@ -7,8 +7,13 @@ import type { Faction } from '$lib/spacetraders/types/factions';
 import type { Ship } from '$lib/spacetraders/types/ships';
 import { NewAgentSchema } from '$lib/spacetraders/constants';
 import type { System } from './types/system';
+import { z } from 'zod';
 
 const SPACETRADERS_API_URL = 'https://api.spacetraders.io/v2';
+
+const client = ky.extend({
+	prefixUrl: SPACETRADERS_API_URL,
+});
 
 export const generateSpaceTradersApi = (accessToken: string) => {
 	const client = ky.extend({
@@ -53,11 +58,22 @@ export const generateSpaceTradersApi = (accessToken: string) => {
 	};
 };
 
-export const registerNewAgent = async (newAgent: NewAgent) => {
-	const client = ky.extend({
-		prefixUrl: SPACETRADERS_API_URL,
-	});
+const getFactionsQueryParametersSchema = z.object({
+	page: z.number().positive().optional(),
+	limit: z.number().int().min(1).max(20),
+});
 
+type GetFactionsQueryParameters = z.infer<typeof getFactionsQueryParametersSchema>;
+
+export const getFactions = async (params: GetFactionsQueryParameters) => {
+	const validatedQueryParameters = getFactionsQueryParametersSchema.parse(params);
+	return await client
+		.get('factions', {
+			searchParams: validatedQueryParameters,
+		})
+		.json<ApiResponse<Faction[]>>();
+};
+export const registerNewAgent = async (newAgent: NewAgent) => {
 	NewAgentSchema.parse(newAgent);
 
 	return await client
