@@ -4,6 +4,7 @@
 	import type { System } from '$lib/spacetraders/types/system';
 	import { apiStore } from '$lib/stores/agent';
 	import { onMount } from 'svelte';
+	import panzoom from 'panzoom';
 
 	let spaceTraderApi: ReturnType<typeof generateSpaceTradersApi> | null;
 	let userAgent: Agent | null;
@@ -94,63 +95,70 @@
 	}
 
 	onMount(() => {
-		function wheelEventFn(e: WheelEvent) {
-			if (e.deltaY > 0) {
-				zoomOut();
-			} else {
-				zoomIn();
-			}
+		const scene = document.querySelector<SVGElement>('.scene');
+		if (scene) {
+			panzoom(scene, {
+				maxZoom: 10,
+				minZoom: 0.3,
+			});
 		}
-		window.addEventListener('wheel', wheelEventFn);
+		// function wheelEventFn(e: WheelEvent) {
+		// 	if (e.deltaY > 0) {
+		// 		zoomOut();
+		// 	} else {
+		// 		zoomIn();
+		// 	}
+		// }
+		// window.addEventListener('wheel', wheelEventFn);
 
-		function keyupEventFn(e: KeyboardEvent) {
-			if (e.code === 'ArrowRight') {
-				setTranslateX(translateX - 10);
-			}
-			if (e.code === 'ArrowLeft') {
-				setTranslateX(translateX + 10);
-			}
-		}
-		window.addEventListener('keyup', keyupEventFn);
+		// function keyupEventFn(e: KeyboardEvent) {
+		// 	if (e.code === 'ArrowRight') {
+		// 		setTranslateX(translateX - 10);
+		// 	}
+		// 	if (e.code === 'ArrowLeft') {
+		// 		setTranslateX(translateX + 10);
+		// 	}
+		// }
+		// window.addEventListener('keyup', keyupEventFn);
 
-		function mousedownEventFn(e: MouseEvent) {
-			isMouseDown = true;
-			mouseDownPosition = {
-				x: e.clientX,
-				y: e.clientY,
-				translateX,
-				translateY,
-			};
-		}
-		window.addEventListener('mousedown', mousedownEventFn);
+		// function mousedownEventFn(e: MouseEvent) {
+		// 	isMouseDown = true;
+		// 	mouseDownPosition = {
+		// 		x: e.clientX,
+		// 		y: e.clientY,
+		// 		translateX,
+		// 		translateY,
+		// 	};
+		// }
+		// window.addEventListener('mousedown', mousedownEventFn);
 
-		function mouseupEventFn(e: MouseEvent) {
-			isMouseDown = false;
-		}
-		window.addEventListener('mouseup', mouseupEventFn);
+		// function mouseupEventFn(e: MouseEvent) {
+		// 	isMouseDown = false;
+		// }
+		// window.addEventListener('mouseup', mouseupEventFn);
 
-		function mousemoveEventFn(e: MouseEvent) {
-			if (isMouseDown) {
-				setTranslateX(mouseDownPosition.translateX - (mouseDownPosition.x - e.clientX));
-				setTranslateY(mouseDownPosition.translateY - (mouseDownPosition.y - e.clientY));
-			}
-		}
-		window.addEventListener('mousemove', mousemoveEventFn);
+		// function mousemoveEventFn(e: MouseEvent) {
+		// 	if (isMouseDown) {
+		// 		setTranslateX(mouseDownPosition.translateX - (mouseDownPosition.x - e.clientX));
+		// 		setTranslateY(mouseDownPosition.translateY - (mouseDownPosition.y - e.clientY));
+		// 	}
+		// }
+		// window.addEventListener('mousemove', mousemoveEventFn);
 
-		return () => {
-			window.removeEventListener('wheel', wheelEventFn);
-			window.removeEventListener('keyup', keyupEventFn);
-			window.removeEventListener('mousedown', mousedownEventFn);
-			window.removeEventListener('mouseup', mouseupEventFn);
-			window.removeEventListener('mousemove', mousemoveEventFn);
-		};
+		// return () => {
+		// 	window.removeEventListener('wheel', wheelEventFn);
+		// 	window.removeEventListener('keyup', keyupEventFn);
+		// 	window.removeEventListener('mousedown', mousedownEventFn);
+		// 	window.removeEventListener('mouseup', mouseupEventFn);
+		// 	window.removeEventListener('mousemove', mousemoveEventFn);
+		// };
 	});
 </script>
 
 <div class="system-wrapper">
 	<div class="system" style="transform: translate({translateX}px, {translateY}px) scale({scale});">
 		<svg viewBox="-800 -800 1600 1600">
-			<g>
+			<g class="scene">
 				{#each rings as ring}
 					<g>
 						<circle

@@ -26,7 +26,7 @@ export const GET: RequestHandler = async ({ cookies, url, locals }) => {
 			if (existingUser) return existingUser;
 			// create a new user if the user does not exist
 			return await createUser({
-				username: providerUser.username
+				username: providerUser.username,
 			});
 		};
 		const user = await getUser();
@@ -35,7 +35,7 @@ export const GET: RequestHandler = async ({ cookies, url, locals }) => {
 	} catch (e) {
 		// invalid code
 		return new Response(null, {
-			status: 500
+			status: 500,
 		});
 	}
 	throw redirect(302, '/');
